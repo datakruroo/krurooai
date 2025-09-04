@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# KruRooAI - Educational AI Assistant CLI
+# Main executable script
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+# Check if R is installed
+if ! command -v Rscript &> /dev/null; then
+    echo "Error: R is not installed or not in PATH"
+    echo "Please install R from https://www.r-project.org/"
+    exit 1
+fi
+
+# Check if Python is installed
+if ! command -v python3 &> /dev/null; then
+    echo "Error: Python 3 is not installed or not in PATH"
+    echo "Please install Python 3"
+    exit 1
+fi
+
+# Set working directory to project root
+cd "$PROJECT_DIR"
+
+# Add Python directory to PYTHONPATH
+export PYTHONPATH="$PROJECT_DIR/python:$PYTHONPATH"
+
+# Run the R main script with all arguments
+Rscript "$PROJECT_DIR/R/main.R" "$@"

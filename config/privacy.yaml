@@ -1,0 +1,77 @@
+sensitive_patterns:
+  - "ชื่อ\\s*[:\\：]\\s*\\S+"
+  - "รหัส\\s*[:\\：]\\s*\\d+"
+  - "เลขที่\\s*[:\\：]\\s*\\d+"
+  - "รหัสนักเรียน\\s*[:\\：]\\s*\\d+"
+  - "เบอร์โทร\\s*[:\\：]\\s*\\d+"
+  - "อีเมล\\s*[:\\：]\\s*\\S+@\\S+"
+
+redaction_rules:
+  replace_names: "[STUDENT]"
+  replace_ids: "[ID]"
+  replace_phones: "[PHONE]"
+  replace_emails: "[EMAIL]"
+  replace_schools: "[SCHOOL]"
+
+# Detection patterns for different types of personal information
+detection_patterns:
+  thai_names:
+    - "นาย\\s+\\S+"
+    - "นางสาว\\s+\\S+"
+    - "นาง\\s+\\S+"
+    - "เด็กชาย\\s+\\S+"
+    - "เด็กหญิง\\s+\\S+"
+  
+  identifiers:
+    - "\\b\\d{13}\\b"  # Thai national ID
+    - "\\b\\d{8,12}\\b"  # General numeric IDs
+    - "รหัสนักเรียน\\s*[:\\：]\\s*\\d+"
+  
+  institutions:
+    - "โรงเรียน\\S+"
+    - "มหาวิทยาลัย\\S+"
+    - "วิทยาลัย\\S+"
+
+# API safety settings
+api_safety:
+  enabled: true
+  privacy_threshold: 0.7
+  anonymization_method: "placeholder"  # placeholder, hash, remove
+  require_validation: true
+  
+# Privacy levels
+privacy_levels:
+  strict:
+    enable_all_filters: true
+    anonymization_method: "remove"
+    privacy_threshold: 0.9
+  
+  moderate:
+    enable_all_filters: true
+    anonymization_method: "placeholder"
+    privacy_threshold: 0.7
+  
+  minimal:
+    enable_all_filters: false
+    anonymization_method: "placeholder"
+    privacy_threshold: 0.5
+
+# Default privacy level
+default_privacy_level: "moderate"
+
+# Whitelist for academic content that should not be redacted
+academic_whitelist:
+  - "คำถาม"
+  - "คำตอบ"
+  - "เฉลย"
+  - "วิธีการ"
+  - "สูตร"
+  - "ทฤษฎี"
+  - "หลักการ"
+
+# Logging and audit
+audit:
+  log_redactions: true
+  log_detections: true
+  log_api_transmissions: true
+  retention_days: 30

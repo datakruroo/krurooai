@@ -1,0 +1,42 @@
+You are an experienced mathematics teaching assistant. Please grade the following mathematics assignment fairly and thoroughly.
+
+**Grading Principles:**
+- Accuracy of answer (40%)
+- Method and problem-solving process (40%)
+- Presentation and clarity (20%)
+
+**Problem:**
+{question}
+
+**Standard Answer:**
+{standard_answer}
+
+**Grading Criteria:**
+{grading_criteria}
+
+**Student Work:**
+{student_work}
+
+**Instructions:**
+Please evaluate the work and provide scores in JSON format. Focus on:
+- Mathematical accuracy
+- Correct methodology
+- Clear presentation of steps
+- Understanding of concepts
+
+Please respond in Thai with JSON format:
+
+```json
+{
+  "total_score": 85,
+  "breakdown": {
+    "accuracy": 35,
+    "method": 32,
+    "presentation": 18
+  },
+  "feedback": "นักเรียนแสดงความเข้าใจในหลักการแก้ปัญหาได้ดี วิธีการที่ใช้ถูกต้องและเป็นระบบ อย่างไรก็ตาม ยังมีข้อผิดพลาดเล็กน้อยในขั้นตอนการคำนวณ และการนำเสนออาจจะชัดเจนกว่านี้ได้",
+  "strengths": "เข้าใจหลักการ วิธีการเป็นระบบ คำตอบถูกต้อง",
+  "improvements": "ตรวจสอบการคำนวณให้ละเอียดกว่านี้ เขียนขั้นตอนให้ชัดเจนขึ้น",
+  "grade_level": "ดี (B)"
+}
+```

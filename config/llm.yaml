@@ -1,0 +1,51 @@
+backends:
+  local:
+    model: "gpt-oss:20b"
+    endpoint: "http://localhost:11434"
+    temperature: 0.3
+    timeout: 60
+    max_tokens: 2000
+  openai:
+    model: "gpt-4o-mini"
+    api_key_env: "OPENAI_API_KEY"
+    temperature: 0.3
+    max_tokens: 2000
+    timeout: 60
+    privacy_mode: true
+    base_url: "https://api.openai.com/v1"
+
+# Default backend mode
+default_backend: "local"
+
+# Hybrid mode configuration
+hybrid:
+  enabled: true
+  weight_local: 0.5
+  weight_api: 0.5
+  consensus_threshold: 0.8
+
+# Model-specific settings
+models:
+  local_models:
+    - "llama2:7b"
+    - "llama2:13b"
+    - "gpt-oss:20b"
+    - "codellama:7b"
+  
+  openai_models:
+    - "gpt-4o-mini"
+    - "gpt-4o"
+    - "gpt-3.5-turbo"
+
+# Performance settings
+performance:
+  batch_size: 5
+  concurrent_requests: 3
+  retry_attempts: 3
+  retry_delay: 2
+
+# Quality control
+quality:
+  min_confidence_threshold: 0.6
+  enable_consistency_check: true
+  enable_outlier_detection: true

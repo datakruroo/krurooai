@@ -1,0 +1,173 @@
+# Grading templates and prompts
+
+report_templates:
+  default:
+    title: "รายงานการตรวจงาน: {student_id}"
+    sections:
+      - "คะแนนรวม"
+      - "รายละเอียด"
+      - "ข้อเสนอแนะ"
+      - "ข้อมูลการประมวลผล"
+  
+  detailed:
+    title: "รายงานการตรวจงานรายละเอียด: {student_id}"
+    sections:
+      - "คะแนนรวม"
+      - "รายละเอียด"
+      - "การวิเคราะห์รายละเอียด"
+      - "คะแนนตามรูบริค"
+      - "ข้อเสนอแนะ"
+      - "ข้อมูลการประมวลผล"
+  
+  summary:
+    title: "สรุปผลการตรวจงาน"
+    sections:
+      - "คะแนน"
+      - "ระดับ"
+      - "สถานะ"
+
+# Grading criteria templates
+grading_criteria:
+  standard:
+    accuracy: 40  # Correctness of answer
+    method: 40    # Method and approach
+    presentation: 20  # Clarity and presentation
+  
+  math_problem:
+    calculation: 30
+    method: 35
+    explanation: 20
+    final_answer: 15
+  
+  essay:
+    content: 40
+    organization: 30
+    language: 20
+    creativity: 10
+
+# Prompt templates for different subjects
+prompt_templates:
+  mathematics:
+    system: |
+      คุณเป็นผู้ช่วยอาจารย์คณิตศาสตร์ กรุณาตรวจงานและให้คะแนนอย่างยุติธรรม
+      ให้ความสำคัญกับวิธีการคิด กระบวนการแก้ปัญหา และความถูกต้องของคำตอบ
+    
+    user: |
+      กรุณาตรวจและให้คะแนนงานคณิตศาสตร์นี้:
+      
+      ## โจทย์:
+      {question}
+      
+      ## เฉลย:
+      {standard_answer}
+      
+      ## งานของนักเรียน:
+      {student_work}
+      
+      ## เกณฑ์การประเมิน:
+      {grading_criteria}
+  
+  science:
+    system: |
+      คุณเป็นผู้ช่วยอาจารย์วิทยาศาสตร์ กรุณาตรวจงานด้วยความเข้มงวดทางวิทยาศาสตร์
+      ให้ความสำคัญกับความถูกต้องของข้อมูล การใช้หลักวิทยาศาสตร์ และการอธิบาย
+    
+    user: |
+      กรุณาตรวจและให้คะแนนงานวิทยาศาสตร์นี้:
+      
+      ## คำถาม:
+      {question}
+      
+      ## คำตอบมาตรฐาน:
+      {standard_answer}
+      
+      ## งานของนักเรียน:
+      {student_work}
+      
+      ## เกณฑ์การประเมิน:
+      {grading_criteria}
+  
+  language:
+    system: |
+      คุณเป็นผู้ช่วยอาจารย์ภาษา กรุณาตรวจงานด้วยความใส่ใจในด้านภาษา
+      ให้ความสำคัญกับไวยากรณ์ การใช้คำศัพท์ และการสื่อความหมาย
+    
+    user: |
+      กรุณาตรวจและให้คะแนนงานภาษานี้:
+      
+      ## หัวข้อ:
+      {question}
+      
+      ## ตัวอย่างคำตอบ:
+      {standard_answer}
+      
+      ## งานของนักเรียน:
+      {student_work}
+      
+      ## เกณฑ์การประเมิน:
+      {grading_criteria}
+
+# Response format templates
+response_formats:
+  json_structured:
+    format: |
+      {
+        "total_score": <คะแนนรวม 0-100>,
+        "breakdown": {
+          "accuracy": <คะแนนความถูกต้อง>,
+          "method": <คะแนนวิธีการ>,
+          "presentation": <คะแนนการนำเสนอ>
+        },
+        "feedback": "<ข้อเสนอแนะรายละเอียด>",
+        "strengths": "<จุดเด่น>",
+        "improvements": "<ข้อเสนอแนะปรับปรุง>",
+        "grade_level": "<ระดับคะแนน>"
+      }
+  
+  markdown_report:
+    format: |
+      # การประเมินงาน
+      
+      ## คะแนนรวม: {total_score}/100
+      
+      ## รายละเอียด
+      - ความถูกต้อง: {accuracy_score}
+      - วิธีการ: {method_score}
+      - การนำเสนอ: {presentation_score}
+      
+      ## ข้อเสนอแนะ
+      {feedback}
+      
+      ## จุดเด่น
+      {strengths}
+      
+      ## ข้อเสนอแนะปรับปรุง
+      {improvements}
+
+# Feedback phrases in Thai
+feedback_phrases:
+  positive:
+    - "งานนี้มีจุดเด่นในด้าน"
+    - "แสดงให้เห็นความเข้าใจที่ดี"
+    - "วิธีการแก้ปัญหาชัดเจน"
+    - "การนำเสนอเป็นระบบ"
+  
+  negative:
+    - "ควรปรับปรุงในด้าน"
+    - "ยังขาดความชัดเจนใน"
+    - "ต้องให้ความสำคัญกับ"
+    - "ควรพิจารณาทบทวน"
+  
+  neutral:
+    - "โดยรวมแล้ว"
+    - "สำหรับข้อนี้"
+    - "ในส่วนของ"
+    - "เมื่อพิจารณา"
+
+# Grade level mappings
+grade_levels:
+  90-100: "ดีเยี่ยม (A)"
+  80-89: "ดี (B)"
+  70-79: "พอใช้ (C)"
+  60-69: "ผ่าน (D)"
+  0-59: "ไม่ผ่าน (F)"
