@@ -3,6 +3,9 @@
 # main.R - CLI entry point for KruRooAI
 # Educational AI Assistant for grading and assessment
 
+# Ensure correct library path
+.libPaths(c(.libPaths(), "/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library"))
+
 library(optparse)
 library(jsonlite)
 

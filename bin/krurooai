@@ -7,6 +7,13 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
+# If script is symlinked, resolve to actual location
+if [[ -L "${BASH_SOURCE[0]}" ]]; then
+    REAL_SCRIPT="$(readlink "${BASH_SOURCE[0]}")"
+    SCRIPT_DIR="$(cd "$(dirname "$REAL_SCRIPT")" && pwd)"
+    PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+fi
+
 # Check if R is installed
 if ! command -v Rscript &> /dev/null; then
     echo "Error: R is not installed or not in PATH"

@@ -49,3 +49,4 @@ quality:
   min_confidence_threshold: 0.6
   enable_consistency_check: true
   enable_outlier_detection: true
+

@@ -75,3 +75,4 @@ audit:
   log_detections: true
   log_api_transmissions: true
   retention_days: 30
+
