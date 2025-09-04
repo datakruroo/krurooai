@@ -28,11 +28,18 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
+# Store original working directory
+ORIGINAL_DIR="$(pwd)"
+
 # Set working directory to project root
 cd "$PROJECT_DIR"
 
 # Add Python directory to PYTHONPATH
 export PYTHONPATH="$PROJECT_DIR/python:$PYTHONPATH"
 
+# Set environment variable for original directory
+export KRUROOAI_ORIGINAL_DIR="$ORIGINAL_DIR"
+
 # Run the R main script with all arguments
+# Pass arguments and original directory via environment and command line
 Rscript "$PROJECT_DIR/R/main.R" "$@"

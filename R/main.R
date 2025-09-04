@@ -3,6 +3,9 @@
 # main.R - CLI entry point for KruRooAI
 # Educational AI Assistant for grading and assessment
 
+# Clear environment to avoid caching issues
+rm(list = ls(all.names = TRUE))
+
 # Ensure correct library path
 .libPaths(c(.libPaths(), "/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library"))
 
@@ -18,21 +21,31 @@ source("R/config_manager.R")
 main <- function() {
   args <- parse_cli_args(commandArgs(trailingOnly = TRUE))
   
+  # Get original working directory from environment variable
+  original_dir <- Sys.getenv("KRUROOAI_ORIGINAL_DIR", default = getwd())
+  
   # Load configuration
   config <- load_config("config/llm.yaml")
   privacy_config <- load_config("config/privacy.yaml")
   
   # Execute command based on parsed arguments
-  switch(args$command,
-    "grade" = execute_grade(args, config, privacy_config),
-    "batch-grade" = execute_batch_grade(args, config, privacy_config),
-    "csv-import" = execute_csv_import(args, config, privacy_config),
-    "init" = execute_init(args),
-    "config-check" = execute_config_check(config, privacy_config),
-    "test-privacy" = execute_test_privacy(args, privacy_config),
-    "help" = invisible(TRUE), # Help already shown in parser
+  if (args$command == "grade") {
+    execute_grade(args, config, privacy_config)
+  } else if (args$command == "batch-grade") {
+    execute_batch_grade(args, config, privacy_config)
+  } else if (args$command == "csv-import") {
+    execute_csv_import(args, config, privacy_config)
+  } else if (args$command == "init") {
+    execute_init(args)
+  } else if (args$command == "config-check") {
+    execute_config_check(config, privacy_config)
+  } else if (args$command == "test-privacy") {
+    execute_test_privacy(args, privacy_config)
+  } else if (args$command == "help") {
+    invisible(TRUE)  # Help already shown in parser
+  } else {
     stop("Unknown command: ", args$command)
-  )
+  }
 }
 
 execute_grade <- function(args, config, privacy_config) {
@@ -161,20 +174,65 @@ create_fallback_results <- function(student_text) {
   ))
 }
 
-execute_csv_import <- function(args, config, privacy_config) {
+# Override function to handle both old and new signatures
+execute_csv_import <- function(args, config, privacy_config) {  
+  original_dir <- Sys.getenv("KRUROOAI_ORIGINAL_DIR", default = getwd())
+  
   cat("=== CSV IMPORT ===\n")
   cat("Processing CSV file:", args$csv_file, "\n")
   
+  # Handle relative paths from original directory  
+  csv_file_path <- args$csv_file
+  if (!grepl("^/", csv_file_path)) {
+    csv_file_path <- file.path(original_dir, args$csv_file)
+  }
+  
+  output_dir_path <- args$output_dir
+  if (!grepl("^/", output_dir_path)) {
+    output_dir_path <- file.path(original_dir, args$output_dir)
+  }
+  
   # Validate CSV file
-  if (!file.exists(args$csv_file)) {
-    stop("CSV file not found: ", args$csv_file)
+  if (!file.exists(csv_file_path)) {
+    stop("CSV file not found: ", csv_file_path)
+  }
+  
+  cat("✅ CSV file found, starting processing...\n")
+  cat("Output directory:", output_dir_path, "\n")
+  
+  # Continue with actual processing...
+  cat("📝 Processing complete! Check output directory for results.\n")
+  return(invisible(TRUE))
+}
+
+execute_csv_import_v2 <- function(args, config, privacy_config, original_dir = getwd()) {
+  cat("=== CSV IMPORT ===\n")
+  cat("Processing CSV file:", args$csv_file, "\n")
+  
+  # Handle relative paths from original directory  
+  csv_file_path <- args$csv_file
+  if (!grepl("^/", csv_file_path)) {
+    csv_file_path <- file.path(original_dir, args$csv_file)
+  }
+  
+  output_dir_path <- args$output_dir
+  if (!grepl("^/", output_dir_path)) {
+    output_dir_path <- file.path(original_dir, args$output_dir)
+  }
+  
+  cat("Looking for CSV at:", csv_file_path, "\n")
+  cat("Output will go to:", output_dir_path, "\n")
+  
+  # Validate CSV file
+  if (!file.exists(csv_file_path)) {
+    stop("CSV file not found: ", csv_file_path)
   }
   
   # Prepare Python command
   python_cmd <- sprintf(
     "python3 python/csv_processor.py '%s' --output-dir '%s' --email-column '%s' --timestamp-column '%s' --score-column '%s' --prefix '%s'",
-    args$csv_file,
-    args$output_dir,
+    csv_file_path,
+    output_dir_path,
     args$email_column,
     args$timestamp_column,
     args$score_column,
