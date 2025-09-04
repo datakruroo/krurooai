@@ -57,7 +57,9 @@ parse_batch_grade_args <- function(args) {
     make_option(c("--mode"), type = "character", default = "local",
                 help = "LLM backend mode: local, api, or hybrid", metavar = "MODE"),
     make_option(c("--output-dir"), type = "character", default = "output",
-                help = "Output directory", metavar = "DIR")
+                help = "Output directory", metavar = "DIR"),
+    make_option(c("--batch-size"), type = "integer", default = 5,
+                help = "Number of files to process in each batch for quality control", metavar = "N")
   )
   
   parser <- OptionParser(option_list = option_list, usage = "krurooai batch-grade DIRECTORY [options]")
@@ -72,7 +74,8 @@ parse_batch_grade_args <- function(args) {
     input_dir = opt$args[1],
     context = opt$options$context,
     mode = opt$options$mode,
-    output_dir = opt$options$`output-dir`
+    output_dir = opt$options$`output-dir`,
+    batch_size = opt$options$`batch-size`
   ))
 }
 
@@ -160,7 +163,7 @@ show_help <- function() {
   cat("KruRooAI - Educational AI Assistant for Grading\n\n")
   cat("Usage:\n")
   cat("  krurooai grade INPUT_FILE --context CONTEXT.md [--mode local|api|hybrid]\n")
-  cat("  krurooai batch-grade DIRECTORY --context CONTEXT.md [--mode local|api|hybrid]\n")
+  cat("  krurooai batch-grade DIRECTORY --context CONTEXT.md [--mode local|api|hybrid] [--batch-size N]\n")
   cat("  krurooai csv-import CSV_FILE [--output-dir DIR] [--auto-grade --context CONTEXT.md]\n")
   cat("  krurooai init --name PROJECT_NAME --backends local,api\n")
   cat("  krurooai config-check\n")
@@ -168,10 +171,12 @@ show_help <- function() {
   cat("  krurooai help\n\n")
   cat("Commands:\n")
   cat("  grade        Grade a single file\n")
-  cat("  batch-grade  Grade multiple files in a directory\n")
+  cat("  batch-grade  Grade multiple files in a directory (with batch size control)\n")
   cat("  csv-import   Import CSV file and convert to individual submission files\n")
   cat("  init         Initialize a new project\n")
   cat("  config-check Check configuration files\n")
   cat("  test-privacy Test privacy filtering on input file\n")
-  cat("  help         Show this help message\n")
+  cat("  help         Show this help message\n\n")
+  cat("Options:\n")
+  cat("  --batch-size N    Process files in batches of N (default: 5) for quality control\n")
 }

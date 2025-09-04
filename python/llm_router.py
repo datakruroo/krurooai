@@ -36,9 +36,11 @@ def route_to_llm(text: str, context: Dict[str, Any], backend: str = "local", con
         
         # Route to appropriate backend
         if backend == "local":
-            return route_to_local(text, context, config.get("local", {}))
+            local_config = config.get("backends", {}).get("local", {})
+            return route_to_local(text, context, local_config)
         elif backend == "openai":
-            return route_to_openai(text, context, config.get("openai", {}))
+            openai_config = config.get("backends", {}).get("openai", {})
+            return route_to_openai(text, context, openai_config)
         elif backend == "hybrid":
             return route_to_hybrid(text, context, config)
         else:

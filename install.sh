@@ -123,6 +123,19 @@ print_success "Permissions set"
 
 # Install as global command
 print_status "Installing as global command..."
+
+# Remove old symlink if it exists
+if [ -L "/usr/local/bin/krurooai" ]; then
+    print_status "Removing old krurooai symlink..."
+    if sudo -n true 2>/dev/null; then
+        sudo rm -f /usr/local/bin/krurooai
+    else
+        echo "Administrator password needed to remove old installation..."
+        sudo rm -f /usr/local/bin/krurooai
+    fi
+fi
+
+# Create new symlink
 if sudo -n true 2>/dev/null; then
     # User has sudo without password
     sudo ln -sf "$(pwd)/bin/krurooai" /usr/local/bin/krurooai

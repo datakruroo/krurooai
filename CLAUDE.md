@@ -227,6 +227,8 @@ config/llm.yaml
 - **Flexible Configuration**: Customizable column mapping and processing
 - **Report Generation**: Multiple output formats (default, detailed, summary)
 - **System Health Checks**: Comprehensive configuration validation
+- **Enhanced Feedback System**: Detailed per-question analysis with extended token limits
+- **Question Type Classification**: Automatic separation of objective vs subjective questions
 
 ### ✅ Phase 6: Installation & Distribution - COMPLETED
 - **Library Path Resolution**: Fixed R package loading issues across environments
@@ -292,6 +294,9 @@ config/llm.yaml
 - **Comprehensive Error Handling**: Fallback grading when LLM fails
 - **Privacy Protection**: Advanced redaction and filtering
 - **Multiple Output Formats**: Default, detailed, and summary reports
+- **Enhanced Feedback System**: Extended token limits (8000), longer timeout (300s) for detailed analysis
+- **Question Type Separation**: Automatic classification and separate reporting for objective vs subjective questions
+- **Structured Assessment**: Per-question feedback with key points, improvements, and detailed analysis
 - **User-friendly Installation**: Automated install.sh script with dependency management
 - **Safe Uninstallation**: Interactive uninstall.sh script with selective removal options
 - **Complete Documentation**: Installation, usage, and uninstallation guides
@@ -315,6 +320,10 @@ config/llm.yaml
 - [x] Multiple output formats
 - [x] System health checks
 - [x] Comprehensive help system
+- [x] Enhanced feedback system with 8000 token limit
+- [x] Question type classification (objective/subjective)
+- [x] Separated report sections for different question types
+- [x] Extended timeout (300s) for complex analysis
 
 ### ✅ Distribution Ready
 - [x] Automated installation script
@@ -362,6 +371,8 @@ config/llm.yaml
 - **Error Handling**: Graceful fallbacks and informative error messages
 - **Progress Tracking**: Real-time feedback during operations
 - **Troubleshooting**: Built-in diagnostics and common solutions
+- **Enhanced Reports**: Detailed feedback with separated objective/subjective question analysis
+- **Extended Analysis**: 8000-token responses with 300-second timeout for comprehensive evaluation
 
 ### Maintenance & Support
 - **Safe Uninstallation**: `uninstall.sh` with selective removal options

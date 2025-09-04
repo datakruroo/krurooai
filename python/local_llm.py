@@ -7,6 +7,7 @@ Handles communication with local LLM models
 
 import requests
 import json
+import sys
 from typing import Dict, Any, Optional
 
 
@@ -18,6 +19,7 @@ class LocalLLMClient:
         self.endpoint = config.get("endpoint", "http://localhost:11434")
         self.temperature = config.get("temperature", 0.3)
         self.timeout = config.get("timeout", 60)
+        self.max_tokens = config.get("max_tokens", 4000)
         
     def grade_submission(self, text: str, context: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -60,7 +62,14 @@ class LocalLLMClient:
         prompt += f"## งานของนักเรียน:\n{text}\n\n"
         
         prompt += """## คำสั่ง:
-กรุณาให้คะแนนและข้อเสนอแนะในรูปแบบ JSON ดังนี้:
+ตรวจงานและให้คะแนน พร้อม feedback รายข้อแบบละเอียด โดยแยกประเภทคำถาม ในรูปแบบ JSON:
+
+**สำคัญ**: 
+1. ระบุประเภทของแต่ละข้อ: "objective" (ปรนัย/เลือกตอบ) หรือ "subjective" (อัตนัย/เขียนตอบ)
+2. สำหรับข้อปรนัย: ให้คำตอบที่ถูกต้องและอธิบายเหตุผล
+3. สำหรับข้ออัตนัย: ระบุจุดสำคัญที่ควรมีและข้อเสนอแนะการพัฒนา
+4. ให้ความเห็นและข้อเสนอแนะอย่างละเอียด อย่างน้อย 3-5 ประโยคต่อหัวข้อ
+
 {
     "total_score": <คะแนนรวม 0-100>,
     "breakdown": {
@@ -68,9 +77,24 @@ class LocalLLMClient:
         "method": <คะแนนวิธีการ>,
         "presentation": <คะแนนการนำเสนอ>
     },
-    "feedback": "<ข้อเสนอแนะรายละเอียด>",
-    "strengths": "<จุดเด่น>",
-    "improvements": "<ข้อเสนอแนะปรับปรุง>"
+    "question_feedback": [
+        {
+            "question_number": 1,
+            "question_type": "<objective|subjective>",
+            "score": <คะแนน>,
+            "max_score": <คะแนนเต็ม>,
+            "feedback": "<ข้อเสนอแนะละเอียด อย่างน้อย 50-80 คำ อธิบายว่าทำไมถูกหรือผิด พร้อมแนะนำการปรับปรุง>",
+            "is_correct": <true/false>,
+            "student_answer": "<คำตอบของนักเรียน>",
+            "correct_answer": "<คำตอบที่ถูกต้อง (สำหรับข้อปรนัย)>",
+            "key_points": "<จุดสำคัญที่ควรมี (สำหรับข้ออัตนัย)>",
+            "improvement_suggestions": "<คำแนะนำเพื่อปรับปรุง (สำหรับข้ออัตนัย)>"
+        }
+    ],
+    "overall_feedback": "<ข้อเสนอแนะภาพรวมละเอียด อย่างน้อย 100-150 คำ วิเคราะห์จุดแข็งจุดอ่อน และแนวทางพัฒนา>",
+    "strengths": "<จุดเด่นที่เห็นในงาน อย่างน้อย 50-80 คำ ระบุรายละเอียดที่ทำได้ดี>",
+    "improvements": "<ข้อเสนอแนะเพื่อพัฒนา อย่างน้อย 80-120 คำ แนะนำวิธีการปรับปรุงอย่างเป็นขั้นตอน>",
+    "detailed_analysis": "<การวิเคราะห์เชิงลึก อย่างน้อย 150-200 คำ วิเคราะห์แนวคิด วิธีการ และการประยุกต์ใช้>"
 }"""
         
         return prompt
@@ -84,7 +108,8 @@ class LocalLLMClient:
             "prompt": prompt,
             "stream": False,
             "options": {
-                "temperature": self.temperature
+                "temperature": self.temperature,
+                "num_predict": self.max_tokens
             }
         }
         
