@@ -1,6 +1,5 @@
 
-![deepdive png](https://github.com/user-attachments/assets/3c7d8185-8675-429e-bd91-a1688626aa11)
-
+![S__75743286](https://github.com/user-attachments/assets/a38d6ca5-18f6-41bb-a064-6e6d8663d8cd)
 
 # KruRooAI - Educational AI Assistant
 
