@@ -1,3 +1,6 @@
+
+![S__75743286(1)](https://github.com/user-attachments/assets/57d0204d-73d4-48cf-9b88-ef8fce7be54e)
+
 # KruRooAI - Educational AI Assistant
 
 KruRooAI คือ command-line tool สำหรับตรวจและประเมินงานการศึกษา รองรับทั้ง Local LLM และ OpenAI API พร้อมระบบคัดกรองข้อมูลส่วนตัว
